@@ -1,0 +1,3 @@
+member_(X,[X|_]):-!.
+member_(X,[_|Z]):-member_(X,Z).
+

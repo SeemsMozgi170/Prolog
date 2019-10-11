@@ -1,0 +1,62 @@
+son("Andrey").   % Создаю семью из 5ти братьев и отца
+son("Vitya").    % чтобы искать виновного среди братьев
+son("Yura").
+son("Dima").
+son("Kolya").
+
+andrey_say(X):- not(dif(X,"Vitya")).  % Андрей сказал,что это сделал либо Витя
+andrey_say(X):- not(dif(X,"Kolya")).  % либо Коля
+
+vitya_say(X):-                        % Витя сказал, что этого не делал ни он, ни Юра
+    dif(X,"Vitya"),
+    dif(X,"Yura").
+
+dima_say(X):-                         % Дима, сказал, что 1 из них(Андрей и Витя) сказал правду
+    andrey_say(X),
+    not(vitya_say(X)).
+dima_say(X):-
+    not(andrey_say(X)),
+    vitya_say(X).
+
+yura_say(X):- not(dima_say(X)).       % Юра сказал, что Дима не прав
+
+dad_sayA(X,A):-andrey_say(X),A is 1.  % Если Андрей сказал правду, то А=1
+dad_sayA(X,A):-A is 0.                % Иначе, А=0
+
+dad_sayV(X,V):-vitya_say(X),V is 1.   % Если Витя сказал правду, то V=1
+dad_sayV(X,V):-V is 0.                % Иначе, V=0
+
+dad_sayD(X,D):-dima_say(X),D is 1.    % Если Дима сказал правду, то D=1
+dad_sayD(X,D):-D is 0.                % Иначе, D=0
+
+dad_sayY(X,Y):-yura_say(X),Y is 1.    % Если Юра сказал правду, то Y=1
+dad_sayY(X,Y):-Y is 0.                % Иначе, Y=0
+
+dad_say(X):-                          % Их отец сказал, что не менее 3х человек сказали правду
+    dad_sayA(X,A),
+    dad_sayV(X,V),
+    dad_sayD(X,D),
+    dad_sayY(X,Y),
+    S is A+V+D+Y, S>=3,
+    print('Таким образом(1 - сказал правду, 0 - соврал):'),nl,nl,
+    print('Андрей - '),print(A),nl,nl,
+    print('Витя - '),print(V),nl,nl,
+    print('Дима - '),print(D),nl,nl,
+    print('Юра - '),print(Y),nl,nl.
+
+/*
+dad_say(X):-
+    ((andrey_say(X),A is 1);A is 0),
+    ((vitya_say(X), V is 1);V is 0),
+    ((dima_say(X),  D is 1);D is 0),
+    ((yura_say(X),  Y is 1);Y is 0),
+    S is A+V+D+Y, S>=3.
+*/
+
+answer(X):- son(X), dad_say(X).      % Ищем виновного(X) и проверяем, является ли он одним из братьев
+
+
+
+
+
+

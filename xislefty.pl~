@@ -1,0 +1,37 @@
+member_(X,[X|_]).
+member_(X,[_|Z]):-member_(X,Z).
+
+elem_is_n_pos_to_list(1,[Elem|_],Elem).
+elem_is_n_pos_to_list(N,[_|T],Elem):-
+    N > 1,
+    K is N-1,
+    elem_is_n_pos_to_list(K,T,Elem).
+
+isleft(X,Y,[X,Y|_]).
+isleft(X,Y,[_|T]):-isleft(X,Y,T).
+
+near(X,Y,List):-
+    isleft(X,Y,List).
+near(X,Y,List):-
+    isleft(Y,X,List).
+
+einstein(Owner):-
+    Houses = [_,_,_,_,_],
+    elem_is_n_pos_to_list(1,Houses,[norwegian,_,_,_,_]),
+    member_([englishman,_,_,_,red],Houses),
+    isleft([_,_,_,_,green],[_,_,_,_,white],Houses),
+    member_([dane,_,_,tea,_],Houses),
+    near([_,_,marlboro,_,_],[_,cat,_,_,_],Houses),
+    member_([_,_,dunhill,_,yellow],Houses),
+    member_([german,_,rothmans,_,_],Houses),
+    elem_is_n_pos_to_list(3,Houses,[_,_,_,milk,_]),
+    near([_,_,marlboro,_,_],[_,_,_,water,_],Houses),
+    member_([_,bird,pallmall,_,_],Houses),
+    member_([swede,dog,_,_,_],Houses),
+    near([norwegian,_,_,_,_],[_,_,_,_,blue],Houses),
+    member_([_,horse,_,_,blue],Houses),
+    member_([_,_,winfield,beer,_],Houses),
+    member_([_,_,_,coffee,green],Houses),
+    member_([Owner,fish,_,_,_],Houses).
+
+
