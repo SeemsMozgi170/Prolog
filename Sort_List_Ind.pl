@@ -8,4 +8,3 @@ sort_ins([],SortL,SortL):-!.
 sort_ins([H|T],SortPart,SortL):-
     insert(H,SortPart,SortPart1),
     sort_ins(T,SortPart1,SortL).
-
