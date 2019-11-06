@@ -6,7 +6,7 @@ fib(X,Result):-
     fib(X1,Result1),
     fib(X2,Result2),
     Result is Result1+Result2.
-fibi(X,Y):-fibin(X,Y,1,1,1).
+fibi(X,Y):-fibin(X,Y,1,0,1).
 fibin(X,P,X,_,P):-!.
 fibin(X,Y,I,T,P):-
     P1 is T+P,

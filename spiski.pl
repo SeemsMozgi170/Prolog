@@ -80,5 +80,7 @@ sort_unite([H1|T1],[H2|T2],[H1|T]):-
     H1=<H2,!,
     sort_unite(T1,[H2|T2],T).
 
+
+
 sort_unite([H1|T1],[H2|T2],[H2|T]):-
     sort_unite([H1|T1],T2,T).

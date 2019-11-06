@@ -12,3 +12,4 @@ fibin(X,Y,I,T,P):-
     P1 is T+P,
     I1 is I+1,
     fibin(X,Y,I1,P,P1).
+
