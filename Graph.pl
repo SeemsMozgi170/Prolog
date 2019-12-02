@@ -62,3 +62,6 @@ getListDegreeVertex([_|T],IntermediateResult,Result):-
 
 
 
+
+
+

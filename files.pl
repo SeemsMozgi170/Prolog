@@ -24,3 +24,30 @@ solution(PathFile,ListWordsWithoutRepeat):-
     atomics_to_string(ListWordsInFile,Sentence),
     split_string(Sentence,'.','.',ListWordsInSentence),
     hasRepeat(ListWordsInSentence,ListWordsWithoutRepeat,[]).
+
+run2:-
+    see('C:/Users/Ibrag/Desktop/Knoledge_base/1.txt'),
+    readln(X),X \= end_of_file, write(X).
+
+
+main :-
+    open('C:/Users/Ibrag/Desktop/Knoledge_base/1.txt', read, Str),
+    read_file(Str,Lines),
+    close(Str),
+    write(Lines), nl.
+
+read_file(Stream,[]) :-
+    at_end_of_stream(Stream).
+
+read_file(Stream,[X|L]) :-
+    \+ at_end_of_stream(Stream),
+    read(Stream,X),
+    read_file(Stream,L).
+
+
+
+
+
+
+
+

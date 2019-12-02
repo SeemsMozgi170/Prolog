@@ -44,8 +44,7 @@ maxDegreeVertex(Result):-
     write('Вершины : '),write(ListVertex),nl,
     getListDegreeVertex(ListVertex,[],ListDegreeVertex),
     write('Степени всех вершин [Степень,Вершина] : '),write(ListDegreeVertex),nl,
-    max(ListDegreeVertex,Result),
-    write('Res = ').
+    max(ListDegreeVertex,Result).
 
 getListDegreeVertex([],IntermediateResult,Result):-reverse(IntermediateResult,Result),!.
 getListDegreeVertex([Head|Tail],IntermediateResult,Result):-
