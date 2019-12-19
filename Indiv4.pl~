@@ -9,7 +9,9 @@ analyzeLists([H|T],L,C,R):-
     % идем дальше
     analyzeLists(T,L1,C,R),!.
 analyzeLists([_|T],L,C,R):-
+    % если его нет в списке символов второго слова, то +1
     C1 is C + 1,
+    % идем дальше
     analyzeLists(T,L,C1,R).
 %====Находим расстояние между 2мя словами================
 distance(WordA,WordB,Distance):-

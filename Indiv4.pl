@@ -98,6 +98,7 @@ solution:-
     max(ListDistance,MaxDistanceBetweenWords),
     % Получаем новый лист из элементов с максимальным расстоянием такого же вида
     findMax(ListDistance,MaxDistanceBetweenWords,[],ListElementsWithMaxDistance),
+    write(ListElementsWithMaxDistance),nl,
     (% Если такой элемент 1, то выводим его на консоль
      length(ListElementsWithMaxDistance,LengthListElementsWithMaxDistance),
         LengthListElementsWithMaxDistance =< 1,write(ListElementsWithMaxDistance),!;

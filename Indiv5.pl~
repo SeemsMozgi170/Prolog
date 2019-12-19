@@ -12,6 +12,9 @@ checkingAll(_,_,IdCountry):-
     not(country(IdCountry,_,_)),
     write("Такой страны нет в таблице.").
 
+deleteAuthor(A,B,C):- retract(author(A,B,C)),deleteFilm(A1,B1,C1,A,E1).
+deleteFilm(A,B,C,D,E):-
+    retract(films(A,B,C,D,E)).
 deleteAllFilm(A,B,C,D,E):- retractall(films(A,B,C,D,E)).
 deleteAllAuthor(A,B,C):- retractall(author(A,B,C)).
 deleteAllCountry(A,B,C):- retractall(country(A,B,C)).
@@ -39,45 +42,51 @@ outInfo([H1|T1],[H2|T2],[H3|T3]):-
     append(H1H2,H3,[A,B,C,D,E,F,G]),
     write("==============================="),nl,
     write("ИД фильма : "),write(A),nl,
-    write("1 - Название фильма : "),write(B),nl,
-    write("2 - Год выхода на экраны : "),write(C),nl,
+    write("1 - Год выхода на экраны : "),write(B),nl,
+    write("2 - Название фильма : "),write(C),nl,
     write("3 - Режиссер : "),write(D),nl,
     write("4 - Год рождения режиссера : "),write(E),nl,
     write("5 - Страна-производитель : "),write(F),nl,
     write("6 - Валюта этой страны : "),write(G),nl,
     outInfo(T1,T2,T3).
 
+insertFilm(Id,Year,Name,IdAuthor,IdCountry):-
+    (not(checkingAll(Id,IdAuthor,IdCountry)),
+    assertz(films(Id,Year,Name,IdAuthor,IdCountry)),
+    write("Строчечка вставлена в табличеку!))) Теперь там есть новый фильм!)))")).
 insertFilm:-
     write("ИД фильма : "), read(Id),
     write("Год выхода на экраны : "),read(Year),
     write("Название фильма : "),read(Name),
     write("ИД режиссера : "),read(IdAuthor),
     write("ИД страны-производителя : "),read(IdCountry),
-    (not(checkingAll(Id,IdAuthor,IdCountry)),
-    assertz(films(Id,Year,Name,IdAuthor,IdCountry)),
-    write("Строчечка вставлена в табличеку!))) Теперь там есть новый фильм!)))")).
+    insertFilm(Id,Year,Name,IdAuthor,IdCountry).
 
-insertAuthor:-
-    write("ИД режиссера : "), read(Id),
-    write("Имя режиссера : "),read(Name),
-    write("Год рождения : "),read(Year),
+insertAuthor(Id,Name,Year):-
     (
      (not(author(Id,_,_)),
       assertz(author(Id,Name,Year)),
       write("Строчечка вставлена в табличеку!))) Теперь там есть новый фильм!)))");
      write("Нельзя!))) Появляется неоднозначность первичного ключа"))
     ).
+insertAuthor:-
+    write("ИД режиссера : "), read(Id),
+    write("Имя режиссера : "),read(Name),
+    write("Год рождения : "),read(Year),
+    insertAuthor(Id,Name,Year).
 
-insertCountry:-
-    write("ИД страны : "), read(Id),
-    write("Имя : "),read(Name),
-    write("Валюта : "),read(Currency),
+insertCountry(Id,Name,Currency):-
     (
      (not(country(Id,_,_)),
       assertz(country(Id,Name,Currency)),
       write("Строчечка вставлена в табличеку!))) Теперь там есть новая страна!!)))");
      write("Нельзя!))) Появляется неоднозначность первичного ключа"))
     ).
+insertCountry:-
+    write("ИД страны : "), read(Id),
+    write("Имя : "),read(Name),
+    write("Валюта : "),read(Currency),
+    insertCountry(Id,Name,Currency).
 
 updateList([],_,_,_,[]):-!.
 updateList([_|T],Index,Index,NewValue,[NewValue|T]):-!.
@@ -132,18 +141,55 @@ query2(A,Res):-
     findall([D,E],(author(_,D,E),E>=A),Res).
 
 query3(BeginYear,BeginLetter,Res):-
-    bagof(['Год выхода = ',B,
-           'Название фильма = ',C],
+    findall([B,C],
           (films(_,B,C,D,E),
            author(D,_,YD),
            country(E,NE,_),
            string_chars(NE,[H|_]),
            H = BeginLetter,
-           YD<BeginYear),
+           YD>=BeginYear),
           Res).
+
+inputData:-
+    insertCountry(1,"USA","Dollar"),
+    insertCountry(2,"South Korea","Won"),
+    insertCountry(3,"Japan","Yen"),
+    insertCountry(4,"Россия","Рубль"),
+
+    insertAuthor(1,"Todd Phillips",1970),
+    insertAuthor(2,"Anthony Russo",1970),
+    insertAuthor(3,"Quentin Tarantino",1963),
+    insertAuthor(4,"Bong Joon-ho",1969),
+    insertAuthor(5,"Rob Letterman",1970),
+    insertAuthor(6,"Роман Прыгунов",1969),
+
+    insertFilm(1,2019,"Joker",1,1),
+    insertFilm(2,2019,"Avengers: Final",2,1),
+    insertFilm(3,2019,"Once Upon a Time in...Hollywood",3,1),
+    insertFilm(4,2019,"Vermin",4,2),
+    insertFilm(5,2019,"Pokemon: Detective Pikachu",5,3),
+    insertFilm(6,2019,"Миллион",6,4).
 
 test1:-
     findall(Id,author(Id,_,_),Res1),
     write(Res1),nl,
     bagof(Name,(author(Id,Name,_),member(Id,[2,3])),Res2),
     write(Res2),nl.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
